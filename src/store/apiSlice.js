@@ -3,12 +3,17 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: (builder) => ({
-    getService: builder.query({
+    getServices: builder.query({
       query: () => ({
         url: '/services',
+      }),
+    }),
+    getService: builder.query({
+      query: (id) => ({
+        url: `/services/${id}`,
       }),
     }),
   }),
 });
 
-export const { useGetServiceQuery } = api;
+export const { useGetServicesQuery, useGetServiceQuery } = api;

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { LuckyDog } from '../dogs/LuckyDog';
 import { getDogs } from '../dogs/dogsSlice';
 import { Loader } from '../../components/Loader';
-import { useGetServiceQuery } from '../../store/apiSlice.js';
+import { useGetServicesQuery } from '../../store/apiSlice.js';
 import { getServicesForLuckyDog } from './servicesSlice.js';
 
 export function ServicesPage() {
   const dispatch = useDispatch();
-  const { data: services, isLoading } = useGetServiceQuery();
+  const { data: services, isLoading } = useGetServicesQuery();
 
   const myDogs = useSelector((state) => state.dogs.myDogs);
   const hasDogs = useSelector((state) => state.dogs.hasDogs);
