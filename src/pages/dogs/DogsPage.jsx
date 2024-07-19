@@ -1,19 +1,14 @@
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { removeDog, addDog, getDogs } from "./dogsSlice";
-import { LuckyDog } from "./LuckyDog";
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeDog, addDog, getDogs } from './dogsSlice';
+import { LuckyDog } from './LuckyDog';
+import { useGetDogsQuery } from '../../store/apiSlice';
 
 export function DogsPage() {
   const dialogRef = useRef();
   const dispatch = useDispatch();
-  const dogsReady = useSelector((state) => state.dogs.dogsReady);
-  const myDogs = useSelector((state) => state.dogs.myDogs);
+  const { data: myDogs = {}, isLoading } = useGetDogsQuery();
   const luckyDog = useSelector((state) => state.dogs.luckyDog);
-
-  useEffect(() => {
-    if (dogsReady) return;
-    dispatch(getDogs());
-  }, [dispatch, dogsReady]);
 
   const handleDeleteDog = (e, dog) => {
     e.preventDefault();
@@ -35,112 +30,113 @@ export function DogsPage() {
     dialogRef.current?.close();
   };
   return (
-    <div className="page">
+    <div className='page'>
       <h1>My Dogs</h1>
       <p>
         It&apos;s important that you provide us with a complete and accurate
         list of <i>all</i> of your dogs, so that we can provide them with the
         best services possible.
       </p>
-      {Object.values(myDogs).length > 0 && (
+      {!isLoading && Object.values(myDogs).length > 0 && (
         <>
           <p>Choose the lucky dog that will be groomed next.</p>
           <LuckyDog />
         </>
       )}
-      {Object.values(myDogs).map((dog) => {
-        return (
-          <div
-            key={dog.id}
-            className={
-              "card closable" + (luckyDog === dog.id ? " luckyDog" : "")
-            }
-          >
-            <i className="dogImg">🐶</i>
-            <div style={{ flex: 1 }}>
-              <div className="dogCardHeader">
-                <h3 className="dogName">{dog.name}</h3>
-                <button
-                  className="deleteDog"
-                  aria-label={`Remove ${dog.name} from your dog list`}
-                  onClick={(e) => handleDeleteDog(e, dog)}
-                >
-                  x
-                </button>
-              </div>
-              <div className="cardContents">
-                <dl>
-                  <dt>Size:</dt>
-                  <dd>{dog.size}</dd>
-                  <dt>Age:</dt>
-                  <dd>{dog.age}</dd>
-                  <dt>Breed:</dt>
-                  <dd>{dog.breed}</dd>
-                </dl>
+      {!isLoading &&
+        Object.values(myDogs).map((dog) => {
+          return (
+            <div
+              key={dog.id}
+              className={
+                'card closable' + (luckyDog === dog.id ? ' luckyDog' : '')
+              }
+            >
+              <i className='dogImg'>🐶</i>
+              <div style={{ flex: 1 }}>
+                <div className='dogCardHeader'>
+                  <h3 className='dogName'>{dog.name}</h3>
+                  <button
+                    className='deleteDog'
+                    aria-label={`Remove ${dog.name} from your dog list`}
+                    onClick={(e) => handleDeleteDog(e, dog)}
+                  >
+                    x
+                  </button>
+                </div>
+                <div className='cardContents'>
+                  <dl>
+                    <dt>Size:</dt>
+                    <dd>{dog.size}</dd>
+                    <dt>Age:</dt>
+                    <dd>{dog.age}</dd>
+                    <dt>Breed:</dt>
+                    <dd>{dog.breed}</dd>
+                  </dl>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-      <dialog ref={dialogRef} className="dogDialog">
-        <form onSubmit={handleNewDog} className="dogsForm">
-          <div className="grid">
+          );
+        })}
+      <dialog ref={dialogRef} className='dogDialog'>
+        <form onSubmit={handleNewDog} className='dogsForm'>
+          <div className='grid'>
             <fieldset>
-              <label htmlFor="name">Name:</label>
+              <label htmlFor='name'>Name:</label>
               <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="puppo"
+                id='name'
+                name='name'
+                type='text'
+                placeholder='puppo'
                 required
               />
             </fieldset>
             <fieldset>
-              <label htmlFor="dob">Date of Birth:</label>
-              <input id="dob" name="dob" type="date" required />
+              <label htmlFor='dob'>Date of Birth:</label>
+              <input id='dob' name='dob' type='date' required />
             </fieldset>
             <fieldset>
-              <label htmlFor="weight">Weight (lb):</label>
+              <label htmlFor='weight'>Weight (lb):</label>
               <input
-                id="weight"
-                name="weight"
-                type="number"
-                max="200"
-                min="0"
+                id='weight'
+                name='weight'
+                type='number'
+                max='200'
+                min='0'
                 required
-                placeholder="5"
+                placeholder='5'
               />
             </fieldset>
             <fieldset>
-              <label htmlFor="breed">Breed:</label>
-              <select id="breed" name="breed" defaultValue="default" required>
-                <option value="default">(Select)</option>
-                <option value="golden-retriever">Golden Retriever</option>
-                <option value="pug">Pug</option>
-                <option value="dalmation">Dalmation</option>
-                <option value="german-shepherd">German Shepherd</option>
-                <option value="lab">Lab</option>
-                <option value="poodle">Poodle</option>
-                <option value="french-bulldog">French Bulldog</option>
-                <option value="cockerspaniel">Cockerspaniel</option>
-                <option value="husky">Husky</option>
-                <option value="hound">Hound</option>
-                <option value="great-dane">Great Dane</option>
-                <option value="scottish-terrir">Scottish Terrier</option>
-                <option value="mixed">Mixed</option>
-                <option value="other">Other</option>
+              <label htmlFor='breed'>Breed:</label>
+              <select id='breed' name='breed' defaultValue='default' required>
+                <option value='default'>(Select)</option>
+                <option value='golden-retriever'>Golden Retriever</option>
+                <option value='pug'>Pug</option>
+                <option value='dalmation'>Dalmation</option>
+                <option value='german-shepherd'>German Shepherd</option>
+                <option value='lab'>Lab</option>
+                <option value='poodle'>Poodle</option>
+                <option value='french-bulldog'>French Bulldog</option>
+                <option value='cockerspaniel'>Cockerspaniel</option>
+                <option value='husky'>Husky</option>
+                <option value='hound'>Hound</option>
+                <option value='great-dane'>Great Dane</option>
+                <option value='scottish-terrir'>Scottish Terrier</option>
+                <option value='mixed'>Mixed</option>
+                <option value='other'>Other</option>
               </select>
             </fieldset>
           </div>
-          <div className="center">
+          <div className='center'>
             <button
-              type="reset"
-              className="secondary"
+              type='reset'
+              className='secondary'
               onClick={() => dialogRef.current?.close()}
             >
               Close
             </button>
-            <button type="submit">Add Dog</button>
+            <button type='submit'>Add Dog</button>
           </div>
         </form>
       </dialog>
