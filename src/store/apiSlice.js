@@ -13,7 +13,18 @@ export const api = createApi({
         url: `/services/${id}`,
       }),
     }),
+    makeContact: builder.mutation({
+      query: (body) => ({
+        url: `/contact`,
+        method: 'post',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetServicesQuery, useGetServiceQuery } = api;
+export const {
+  useGetServicesQuery,
+  useGetServiceQuery,
+  useMakeContactMutation,
+} = api;

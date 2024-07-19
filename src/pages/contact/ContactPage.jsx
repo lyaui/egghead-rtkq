@@ -1,13 +1,15 @@
-import { useState } from "react";
-import * as api from "../../api";
+import { useState } from 'react';
+import { useMakeContactMutation } from '../../store/apiSlice';
 
 export function ContactPage() {
   const [wasSent, setWasSent] = useState(false);
+  const [makeContact] = useMakeContactMutation();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    api.makeContact(Object.fromEntries(formData));
+    makeContact(Object.fromEntries(formData));
     form.reset();
 
     // show a short lived message
@@ -17,9 +19,9 @@ export function ContactPage() {
     }, 2000);
   };
   return (
-    <div className="page">
+    <div className='page'>
       <h1>Contact</h1>
-      <p className={`alert ${wasSent ? "show" : ""}`}>
+      <p className={`alert ${wasSent ? 'show' : ''}`}>
         <b>Message sent</b>
       </p>
       <p>
@@ -28,24 +30,24 @@ export function ContactPage() {
         all.
       </p>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email:</label>
+        <label htmlFor='email'>Email:</label>
         <input
           required
-          id="email"
-          type="email"
-          name="email"
-          placeholder="youremail@youremail.com"
+          id='email'
+          type='email'
+          name='email'
+          placeholder='youremail@youremail.com'
         />
-        <label htmlFor="message">Message:</label>
+        <label htmlFor='message'>Message:</label>
         <textarea
           required
-          id="message"
-          name="message"
+          id='message'
+          name='message'
           rows={5}
-          placeholder="Please let us know what you want answered and we will try to help"
+          placeholder='Please let us know what you want answered and we will try to help'
         />
         <div>
-          <button type="submit">Contact</button>
+          <button type='submit'>Contact</button>
         </div>
       </form>
     </div>
