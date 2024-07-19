@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   loading: false,
@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const servicesSlice = createSlice({
-  name: "services",
+  name: 'services',
   initialState,
   reducers: {
     servicesLoading: (state) => {
@@ -26,15 +26,15 @@ export const { servicesLoading, servicesReceived } = servicesSlice.actions;
 
 export default servicesSlice.reducer;
 
-export const getServicesForLuckyDog = (state) => {
+export const getServicesForLuckyDog = (state, services) => {
   // if you don't have a lucky dog, show all of the services
   const dog = state.dogs.myDogs[state.dogs.luckyDog];
   if (!dog) {
-    return state.services.services;
+    return services;
   }
 
   // filter the services shown based on the currently chosen dog
-  return state.services.services
+  return services
     .filter(({ restrictions }) => {
       return restrictions.minAge ? dog.age >= restrictions.minAge : true;
     })

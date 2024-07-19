@@ -5,6 +5,7 @@ import { LuckyDog } from '../dogs/LuckyDog';
 import { getDogs } from '../dogs/dogsSlice';
 import { Loader } from '../../components/Loader';
 import { useGetServiceQuery } from '../../store/apiSlice.js';
+import { getServicesForLuckyDog } from './servicesSlice.js';
 
 export function ServicesPage() {
   const dispatch = useDispatch();
@@ -13,7 +14,9 @@ export function ServicesPage() {
   const myDogs = useSelector((state) => state.dogs.myDogs);
   const hasDogs = useSelector((state) => state.dogs.hasDogs);
   const luckyDog = useSelector((state) => state.dogs.luckyDog);
-  const myServices = services; // useSelector(getServicesForLuckyDog);
+  const myServices = useSelector((state) =>
+    getServicesForLuckyDog(state, services),
+  );
 
   useEffect(() => {
     if (!hasDogs) dispatch(getDogs());
